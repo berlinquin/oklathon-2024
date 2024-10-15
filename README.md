@@ -20,3 +20,7 @@ Follow these steps to set up your dev environment. This assumes development is b
 2. Do the [Display a map](https://developers.arcgis.com/qt/maps-2d/tutorials/display-a-map/) tutorial to verify everything is set up.
    - Optionally, create your own [Location Platform](https://www.esri.com/en-us/arcgis/products/arcgis-location-platform/overview) account. I have an account and API key that we can use for the hackathon.
    - I used cmake as the build tool and it worked fine.
+
+Links
+
+- The [oktraffic.org](https://oktraffic.org/#/map) map with the different traffic cams
