@@ -192,6 +192,8 @@ void TrafficGram::setupGeotriggers()
         qDebug() << stationName;
         auto triggerType = fenceGeotriggerNotificationInfo->fenceNotificationType();
         qDebug() << triggerType;
+        QUrl url = QUrl("https://stream.oktraffic.org/delay-stream/3de90bc6088b412a.stream/playlist.m3u8");
+        emit updateText(url);
     });
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();

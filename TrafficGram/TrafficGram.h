@@ -37,6 +37,9 @@ public:
     explicit TrafficGram(QObject* parent = nullptr);
     ~TrafficGram() override;
 
+signals:
+    void updateText(const QUrl urlString);
+
 public slots:
     void startSimulatedLocation();
 
