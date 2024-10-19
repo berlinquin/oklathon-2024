@@ -44,6 +44,7 @@ private:
 
     void setupViewpoint();
     void createGraphics(Esri::ArcGISRuntime::GraphicsOverlay* overlay);
+    void setupGeotriggers();
 
     Esri::ArcGISRuntime::Geometry m_route;
 

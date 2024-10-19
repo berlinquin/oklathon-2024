@@ -122,3 +122,8 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         overlay->graphics()->append(point_graphic);
     }
 }
+
+void TrafficGram::setupGeotriggers()
+{
+
+}
