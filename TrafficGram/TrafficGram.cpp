@@ -153,7 +153,7 @@ void TrafficGram::setupGeotriggers()
     // Create a new simulation parameters; set the start time and velocity.
     SimulationParameters* simulatedLocationDataSource = new SimulationParameters(this);
     simulatedLocationDataSource->setStartTime(QDateTime::currentDateTime());
-    simulatedLocationDataSource->setVelocity(100); // Meters/Second
+    simulatedLocationDataSource->setVelocity(50); // Meters/Second
 
     // The simulated location will move across the provided polyline.
     simulatedDeviceLocation->setLocationsWithPolyline(m_routePolyline, simulatedLocationDataSource);
@@ -189,9 +189,20 @@ void TrafficGram::setupGeotriggers()
 
         auto fence = fenceGeotriggerNotificationInfo->fenceGeoElement();
         auto stationName = fence->attributes()->attributeValue("name").toString();
+        auto url_string = fence->attributes()->attributeValue("url").toString();
+        QUrl url = QUrl(url_string);
         qDebug() << stationName;
         auto triggerType = fenceGeotriggerNotificationInfo->fenceNotificationType();
         qDebug() << triggerType;
+
+        if(triggerType == FenceNotificationType::Entered)
+        {
+            emit showVideo(url, stationName);
+        }
+        else if(triggerType == FenceNotificationType::Exited)
+        {
+            emit hideVideo();
+        }
     });
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();

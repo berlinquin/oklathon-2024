@@ -37,6 +37,10 @@ public:
     explicit TrafficGram(QObject* parent = nullptr);
     ~TrafficGram() override;
 
+signals:
+    void showVideo(const QUrl urlString, QString stationName);
+    void hideVideo();
+
 public slots:
     void startSimulatedLocation();
 

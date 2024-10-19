@@ -12,6 +12,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtMultimedia
 import Esri.TrafficGram
 
 Item {
@@ -28,6 +29,66 @@ Item {
     TrafficGram {
         id: model
         mapView: view
+    }
+
+    Rectangle {
+        id: videoRectangle
+        width: 200
+        height: 150
+        color:"black"
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+
+        visible: false
+
+        MediaPlayer {
+            id: mediaPlayer
+            source:""
+            videoOutput: videoOutput
+            autoPlay: true
+        }
+
+        VideoOutput {
+            id:videoOutput
+            anchors.fill: parent
+        }
+
+        Connections {
+            target: model
+            onShowVideo: {
+                videoRectangle.visible = true;
+                mediaPlayer.source = urlString;
+            }
+            onHideVideo: {
+                videoRectangle.visible = false;
+            }
+        }
+    }
+
+    Rectangle {
+        id: textObject
+        anchors.bottom: videoRectangle.top
+        color:"white"
+        width: 200
+        height: 15
+        Text {
+            id: actualText
+            text: "Hello world camera"
+            anchors.fill:parent
+        }
+
+        visible: false
+
+        Connections {
+            target: model
+            onShowVideo: {
+                textObject.visible = true
+                actualText.text = stationName
+            }
+            onHideVideo: {
+                textObject.visible = false
+            }
+        }
     }
 
     Button {
