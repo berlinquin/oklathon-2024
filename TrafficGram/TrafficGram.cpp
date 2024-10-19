@@ -34,6 +34,9 @@
 #include "SimulationParameters.h"
 #include "LocationGeotriggerFeed.h"
 #include "LocationDisplay.h"
+#include "GraphicFenceParameters.h"
+#include "FenceGeotrigger.h"
+#include "GeotriggersTypes.h"
 
 using namespace Esri::ArcGISRuntime;
 
@@ -75,6 +78,8 @@ void TrafficGram::setMapView(MapQuickView* mapView)
     GraphicsOverlay* overlay = new GraphicsOverlay(this);
     createGraphics(overlay);
     m_mapView->graphicsOverlays()->append(overlay);
+
+    setupGeotriggers();
 
     emit mapViewChanged();
 }
@@ -119,18 +124,22 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         Graphic* point_graphic = new Graphic(i_44_broadway_ext, point_symbol, this);
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
+        m_graphics.push_back(point_graphic);
     }
     {
         // Create a graphic to display the point with its symbology
         Graphic* point_graphic = new Graphic(i_44_lincoln, point_symbol, this);
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
+        m_graphics.push_back(point_graphic);
     }
 }
 
 void TrafficGram::setupGeotriggers()
 {
     // Following this guide: https://developers.arcgis.com/qt/device-location/work-with-geotriggers/#geotrigger-feed
+
+    // SETUP SIMULATED LOCATION DATA SOURCE
 
     // Create a new simulated location data source.
     SimulatedLocationDataSource* simulatedDeviceLocation = new SimulatedLocationDataSource(this);
@@ -151,7 +160,21 @@ void TrafficGram::setupGeotriggers()
 
     // Enable location display on the map view using the same simulated location source.
     locationDisplay->setDataSource(simulatedDeviceLocation);
-    locationDisplay->start();
+
+    // SETUP GEOFENCE
+    const auto bufferDistance = 200.0;
+    GraphicFenceParameters *graphicFenceParameters = new GraphicFenceParameters(m_graphics, bufferDistance, this);
+
+    // Create a geotrigger with the location feed, "enter" rule type, and the fence parameters.
+    FenceGeotrigger* fenceGeotrigger = new FenceGeotrigger(locationGeotriggerFeed, FenceRuleType::EnterOrExit, graphicFenceParameters, this);
+
+    m_geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger, this);
+    connect(m_geotriggerMonitor, &GeotriggerMonitor::geotriggerNotification, this, [this] (GeotriggerNotificationInfo* geotriggerNotificationInfo)
+    {
+    });
+
+    QFuture<void> ignored = m_geotriggerMonitor->startAsync();
+    Q_UNUSED(ignored);
 }
 
 void TrafficGram::startSimulatedLocation()
