@@ -29,4 +29,11 @@ Item {
         id: model
         mapView: view
     }
+
+    Button {
+        id: startSimulatedLocation
+        text: "Start Simulated Location"
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+    }
 }
