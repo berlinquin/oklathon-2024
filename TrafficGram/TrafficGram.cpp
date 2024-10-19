@@ -147,7 +147,7 @@ void TrafficGram::setupGeotriggers()
     // Create a new simulation parameters; set the start time and velocity.
     SimulationParameters* simulatedLocationDataSource = new SimulationParameters(this);
     simulatedLocationDataSource->setStartTime(QDateTime::currentDateTime());
-    simulatedLocationDataSource->setVelocity(100); // Meters/Second
+    simulatedLocationDataSource->setVelocity(27); // Meters/Second
 
     // The simulated location will move across the provided polyline.
     simulatedDeviceLocation->setLocationsWithPolyline(m_routePolyline, simulatedLocationDataSource);
@@ -175,7 +175,6 @@ void TrafficGram::setupGeotriggers()
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();
     Q_UNUSED(ignored);
-    locationDisplay->start();
 }
 
 void TrafficGram::startSimulatedLocation()
