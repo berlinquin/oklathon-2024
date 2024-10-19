@@ -35,5 +35,6 @@ Item {
         text: "Start Simulated Location"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        onClicked: model.startSimulatedLocation()
     }
 }

@@ -35,6 +35,9 @@ public:
     explicit TrafficGram(QObject* parent = nullptr);
     ~TrafficGram() override;
 
+public slots:
+    void startSimulatedLocation();
+
 signals:
     void mapViewChanged();
 

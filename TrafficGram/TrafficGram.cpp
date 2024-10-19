@@ -152,5 +152,10 @@ void TrafficGram::setupGeotriggers()
 
     // Enable location display on the map view using the same simulated location source.
     locationDisplay->setDataSource(simulatedDeviceLocation);
+}
+
+void TrafficGram::startSimulatedLocation()
+{
+    LocationDisplay* locationDisplay = m_mapView->locationDisplay();
     locationDisplay->start();
 }
