@@ -15,13 +15,17 @@
 
 #include "Polyline.h"
 #include "GeotriggerMonitor.h"
+
+#include <QMap>
+
 namespace Esri::ArcGISRuntime {
 class Graphic;
 class Map;
 class MapQuickView;
-
 class GraphicsOverlay;
 } // namespace Esri::ArcGISRuntime
+
+class RecordingSession;
 
 #include <QObject>
 
@@ -58,6 +62,8 @@ private:
     Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
 
     Esri::ArcGISRuntime::GeotriggerMonitor* m_geotriggerMonitor = nullptr;
+
+    QMap<int, RecordingSession*> m_recordingSessionMap;
 };
 
 #endif // TRAFFICGRAM_H

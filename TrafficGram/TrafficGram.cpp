@@ -39,6 +39,8 @@
 #include "GeotriggersTypes.h"
 #include "FenceGeotriggerNotificationInfo.h"
 #include "AttributeListModel.h"
+#include "recordingsession.h"
+#include <QUrl>
 
 using namespace Esri::ArcGISRuntime;
 
@@ -126,6 +128,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         Graphic* point_graphic = new Graphic(i_44_broadway_ext, point_symbol, this);
         point_graphic->attributes()->insertAttribute("name", "I-44 & Broadway Ext");
         point_graphic->attributes()->insertAttribute("url", "https://stream.oktraffic.org/delay-stream/583254fd67597944.stream/playlist.m3u8");
+        point_graphic->attributes()->insertAttribute("id", 0);
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
@@ -135,6 +138,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         Graphic* point_graphic = new Graphic(i_44_lincoln, point_symbol, this);
         point_graphic->attributes()->insertAttribute("name", "I-44 & Lincoln");
         point_graphic->attributes()->insertAttribute("url", "https://stream.oktraffic.org/delay-stream/1a43dd06948ec7e6.stream/playlist.m3u8");
+        point_graphic->attributes()->insertAttribute("id", 1);
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
@@ -190,8 +194,27 @@ void TrafficGram::setupGeotriggers()
         auto fence = fenceGeotriggerNotificationInfo->fenceGeoElement();
         auto stationName = fence->attributes()->attributeValue("name").toString();
         qDebug() << stationName;
+
+        auto id = fence->attributes()->attributeValue("id").toInt();
+
+        auto url = fence->attributes()->attributeValue("url").toString();
+
         auto triggerType = fenceGeotriggerNotificationInfo->fenceNotificationType();
         qDebug() << triggerType;
+
+        if (triggerType == FenceNotificationType::Entered)
+        {
+            auto recordingSession = new RecordingSession(url, this);
+            recordingSession->startRecording();
+            m_recordingSessionMap[id] = recordingSession;
+        }
+        else if (triggerType == FenceNotificationType::Exited)
+        {
+            if(auto recordingSession = m_recordingSessionMap[id])
+            {
+                recordingSession->stopRecording();
+            }
+        }
     });
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();
