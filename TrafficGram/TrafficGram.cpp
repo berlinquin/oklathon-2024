@@ -26,8 +26,6 @@
 #include "GraphicsOverlay.h"
 #include "GraphicsOverlayListModel.h"
 #include "PolylineBuilder.h"
-#include "PolygonBuilder.h"
-#include "SimpleFillSymbol.h"
 #include "SimpleLineSymbol.h"
 #include "SimpleMarkerSymbol.h"
 #include "SymbolTypes.h"
@@ -83,6 +81,28 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
 
     // I-44 & Lincoln
     const Point i_44_lincoln(-97.50353703164697, 35.52921431832528, SpatialReference::wgs84());
+
+    // Add route from Western to Kelly
+    PolylineBuilder* polyline_route = new PolylineBuilder(SpatialReference::wgs84(), this);
+    polyline_route->addPoint(-97.52981, 35.52577); // Western
+    polyline_route->addPoint(-97.52798, 35.52712); // Start of western curve
+    polyline_route->addPoint(-97.52638, 35.52780); // Apex of western curve
+    polyline_route->addPoint(-97.52185, 35.52806); // curve towards tracks
+    polyline_route->addPoint(-97.51895, 35.52878); // railroad tracks
+    polyline_route->addPoint(-97.51744, 35.52920); // before 235
+    polyline_route->addPoint(-97.51363, 35.52949); // 235 overpass
+    polyline_route->addPoint(-97.50841, 35.52942); // Halfway to Lincoln
+    polyline_route->addPoint(-97.50415, 35.52955); // Overpass for Lincoln
+    polyline_route->addPoint(-97.49985, 35.53091); // Another between these two
+    polyline_route->addPoint(-97.49747, 35.53242); // Halfway to Kelly
+    polyline_route->addPoint(-97.49419, 35.53506); // Kelly
+
+    m_route = polyline_route->toGeometry();
+
+    SimpleLineSymbol* route_symbol = new SimpleLineSymbol(SimpleLineSymbolStyle::Solid, QColor(Qt::green), 1, this);
+    Graphic* polyline_graphic = new Graphic(m_route, route_symbol, this);
+
+    overlay->graphics()->append(polyline_graphic);
 
     // Create symbols for the point
     SimpleLineSymbol* point_outline = new SimpleLineSymbol(SimpleLineSymbolStyle::Solid, QColor("blue"), 3, this);

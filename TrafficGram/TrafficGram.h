@@ -13,6 +13,7 @@
 #ifndef TRAFFICGRAM_H
 #define TRAFFICGRAM_H
 
+#include "Geometry.h"
 namespace Esri::ArcGISRuntime {
 class Map;
 class MapQuickView;
@@ -43,6 +44,8 @@ private:
 
     void setupViewpoint();
     void createGraphics(Esri::ArcGISRuntime::GraphicsOverlay* overlay);
+
+    Esri::ArcGISRuntime::Geometry m_route;
 
     Esri::ArcGISRuntime::Map* m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
