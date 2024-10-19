@@ -10,7 +10,7 @@ class RecordingSession : public QObject
 {
     Q_OBJECT
 public:
-    explicit RecordingSession(QUrl trafficCamServer, QObject *parent = nullptr);
+    explicit RecordingSession(QString trafficCamServer, QObject *parent = nullptr);
 
 public slots:
     void startRecording();
@@ -19,7 +19,7 @@ public slots:
 signals:
 
 private:
-    QUrl m_trafficCamServer;
+    QString m_trafficCamServer;
     QProcess* m_ffmpegProcess;
 };
 

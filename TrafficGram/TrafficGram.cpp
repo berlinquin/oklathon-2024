@@ -196,7 +196,6 @@ void TrafficGram::setupGeotriggers()
         qDebug() << stationName;
 
         auto id = fence->attributes()->attributeValue("id").toInt();
-
         auto url = fence->attributes()->attributeValue("url").toString();
 
         auto triggerType = fenceGeotriggerNotificationInfo->fenceNotificationType();

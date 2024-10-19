@@ -2,7 +2,7 @@
 
 #include <QProcess>
 
-RecordingSession::RecordingSession(QUrl trafficCamServer, QObject *parent)
+RecordingSession::RecordingSession(QString trafficCamServer, QObject *parent)
     : QObject{parent}
     , m_trafficCamServer{std::move(trafficCamServer)}
 {
@@ -16,11 +16,14 @@ void RecordingSession::startRecording()
     m_ffmpegProcess = new QProcess(this);
     m_ffmpegProcess->setProgram("~/Downloads/ffmpeg");
     QString outputFilename = QString("~/Downloads/out_").append(QString::number(counter)).append(".mp4");
-    m_ffmpegProcess->setArguments({"-i", "https://stream.oktraffic.org/delay-stream/3de90bc6088b412a.stream/playlist.m3u8", "-codec", "copy", outputFilename});
+    m_ffmpegProcess->setArguments({"-i", m_trafficCamServer, "-codec", "copy", outputFilename});
     m_ffmpegProcess->start();
 }
 
 void RecordingSession::stopRecording()
 {
-    m_ffmpegProcess->terminate();
+    auto code = m_ffmpegProcess->exitCode();
+    auto status = m_ffmpegProcess->exitStatus();
+    m_ffmpegProcess->write("q");
+    m_ffmpegProcess->closeWriteChannel();
 }
