@@ -179,6 +179,5 @@ void TrafficGram::setupGeotriggers()
 
 void TrafficGram::startSimulatedLocation()
 {
-    LocationDisplay* locationDisplay = m_mapView->locationDisplay();
-    locationDisplay->start();
+    setupGeotriggers();
 }
