@@ -35,6 +35,13 @@ Item {
         text: "Start Simulated Location"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        anchors.margins: 5
         onClicked: model.startSimulatedLocation()
+
+        background: Rectangle {
+            border.color: "black"                                 // Set the border color
+            color: parent.pressed ? "light gray" : "black"        // Background color of the button
+            radius: 5                                             // Optional: rounded corners
+        }
     }
 }
