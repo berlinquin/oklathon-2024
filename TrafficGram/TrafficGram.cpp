@@ -37,6 +37,8 @@
 #include "GraphicFenceParameters.h"
 #include "FenceGeotrigger.h"
 #include "GeotriggersTypes.h"
+#include "FenceGeotriggerNotificationInfo.h"
+#include "AttributeListModel.h"
 
 using namespace Esri::ArcGISRuntime;
 
@@ -122,6 +124,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
     {
         // Create a graphic to display the point with its symbology
         Graphic* point_graphic = new Graphic(i_44_broadway_ext, point_symbol, this);
+        point_graphic->attributes()->insertAttribute("name", "I-44 & Broadway Ext");
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
@@ -129,6 +132,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
     {
         // Create a graphic to display the point with its symbology
         Graphic* point_graphic = new Graphic(i_44_lincoln, point_symbol, this);
+        point_graphic->attributes()->insertAttribute("name", "I-44 & Lincoln");
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
@@ -171,6 +175,21 @@ void TrafficGram::setupGeotriggers()
     m_geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger, this);
     connect(m_geotriggerMonitor, &GeotriggerMonitor::geotriggerNotification, this, [this] (GeotriggerNotificationInfo* geotriggerNotificationInfo)
     {
+        QScopedPointer<GeotriggerNotificationInfo> scopedNotification{geotriggerNotificationInfo};
+
+        if (geotriggerNotificationInfo->geotriggerNotificationInfoType() !=
+            GeotriggerNotificationInfoType::FenceGeotriggerNotificationInfo)
+        {
+            return;
+        }
+
+        FenceGeotriggerNotificationInfo* fenceGeotriggerNotificationInfo = static_cast<FenceGeotriggerNotificationInfo*>(geotriggerNotificationInfo);
+
+        auto fence = fenceGeotriggerNotificationInfo->fenceGeoElement();
+        auto stationName = fence->attributes()->attributeValue("name").toString();
+        qDebug() << stationName;
+        auto triggerType = fenceGeotriggerNotificationInfo->fenceNotificationType();
+        qDebug() << triggerType;
     });
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();
