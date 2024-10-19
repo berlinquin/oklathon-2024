@@ -55,9 +55,12 @@ Item {
 
         Connections {
             target: model
-            onUpdateText: {
-                videoRectangle.visible = true
+            onShowVideo: {
+                videoRectangle.visible = true;
                 mediaPlayer.source = urlString;
+            }
+            onHideVideo: {
+                videoRectangle.visible = false;
             }
         }
     }
@@ -69,6 +72,7 @@ Item {
         width: 200
         height: 15
         Text {
+            id: actualText
             text: "Hello world camera"
             anchors.fill:parent
         }
@@ -77,8 +81,12 @@ Item {
 
         Connections {
             target: model
-            onUpdateText: {
+            onShowVideo: {
                 textObject.visible = true
+                actualText.text = stationName
+            }
+            onHideVideo: {
+                textObject.visible = false
             }
         }
     }

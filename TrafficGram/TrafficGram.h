@@ -38,7 +38,8 @@ public:
     ~TrafficGram() override;
 
 signals:
-    void updateText(const QUrl urlString);
+    void showVideo(const QUrl urlString, QString stationName);
+    void hideVideo();
 
 public slots:
     void startSimulatedLocation();
