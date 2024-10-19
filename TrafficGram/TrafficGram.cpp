@@ -30,6 +30,11 @@
 #include "SimpleMarkerSymbol.h"
 #include "SymbolTypes.h"
 
+#include "SimulatedLocationDataSource.h"
+#include "SimulationParameters.h"
+#include "LocationGeotriggerFeed.h"
+#include "LocationDisplay.h"
+
 using namespace Esri::ArcGISRuntime;
 
 TrafficGram::TrafficGram(QObject* parent /* = nullptr */):
@@ -121,4 +126,36 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
     }
+}
+
+void TrafficGram::setupGeotriggers()
+{
+    // Following this guide: https://developers.arcgis.com/qt/device-location/work-with-geotriggers/#geotrigger-feed
+
+    // Create a new simulated location data source.
+    SimulatedLocationDataSource* simulatedDeviceLocation = new SimulatedLocationDataSource(this);
+
+    // Create a new simulation parameters; set the start time and velocity.
+    SimulationParameters* simulatedLocationDataSource = new SimulationParameters(this);
+    simulatedLocationDataSource->setStartTime(QDateTime::currentDateTime());
+    simulatedLocationDataSource->setVelocity(100.0); // Meters/Second
+
+    // The simulated location will move across the provided polyline.
+    // TODO set this with geometry from James
+    //simulatedDeviceLocation->setLocationsWithPolyline(m_routeLine, simulatedLocationDataSource);
+
+    // Create a new Geotrigger feed with the simulated location source.
+    LocationGeotriggerFeed* locationGeotriggerFeed = new LocationGeotriggerFeed(simulatedDeviceLocation, this);
+
+    // Get the location display from the map view.
+    LocationDisplay* locationDisplay = m_mapView->locationDisplay();
+
+    // Enable location display on the map view using the same simulated location source.
+    locationDisplay->setDataSource(simulatedDeviceLocation);
+}
+
+void TrafficGram::startSimulatedLocation()
+{
+    LocationDisplay* locationDisplay = m_mapView->locationDisplay();
+    locationDisplay->start();
 }

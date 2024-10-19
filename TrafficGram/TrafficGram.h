@@ -35,6 +35,9 @@ public:
     explicit TrafficGram(QObject* parent = nullptr);
     ~TrafficGram() override;
 
+public slots:
+    void startSimulatedLocation();
+
 signals:
     void mapViewChanged();
 
@@ -44,6 +47,7 @@ private:
 
     void setupViewpoint();
     void createGraphics(Esri::ArcGISRuntime::GraphicsOverlay* overlay);
+    void setupGeotriggers();
 
     Esri::ArcGISRuntime::Geometry m_route;
 
