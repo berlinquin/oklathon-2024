@@ -125,6 +125,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         // Create a graphic to display the point with its symbology
         Graphic* point_graphic = new Graphic(i_44_broadway_ext, point_symbol, this);
         point_graphic->attributes()->insertAttribute("name", "I-44 & Broadway Ext");
+        point_graphic->attributes()->insertAttribute("url", "https://stream.oktraffic.org/delay-stream/583254fd67597944.stream/playlist.m3u8");
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
@@ -133,6 +134,7 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
         // Create a graphic to display the point with its symbology
         Graphic* point_graphic = new Graphic(i_44_lincoln, point_symbol, this);
         point_graphic->attributes()->insertAttribute("name", "I-44 & Lincoln");
+        point_graphic->attributes()->insertAttribute("url", "https://stream.oktraffic.org/delay-stream/1a43dd06948ec7e6.stream/playlist.m3u8");
         // Add point graphic to the graphics overlay
         overlay->graphics()->append(point_graphic);
         m_graphics.push_back(point_graphic);
