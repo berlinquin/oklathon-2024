@@ -102,10 +102,10 @@ void TrafficGram::createGraphics(GraphicsOverlay *overlay)
     polyline_route->addPoint(-97.49747, 35.53242); // Halfway to Kelly
     polyline_route->addPoint(-97.49419, 35.53506); // Kelly
 
-    m_route = polyline_route->toGeometry();
+    m_routePolyline = polyline_route->toPolyline();
 
     SimpleLineSymbol* route_symbol = new SimpleLineSymbol(SimpleLineSymbolStyle::Solid, QColor(Qt::green), 1, this);
-    Graphic* polyline_graphic = new Graphic(m_route, route_symbol, this);
+    Graphic* polyline_graphic = new Graphic(polyline_route->toGeometry(), route_symbol, this);
 
     overlay->graphics()->append(polyline_graphic);
 
@@ -141,8 +141,7 @@ void TrafficGram::setupGeotriggers()
     simulatedLocationDataSource->setVelocity(100.0); // Meters/Second
 
     // The simulated location will move across the provided polyline.
-    // TODO set this with geometry from James
-    //simulatedDeviceLocation->setLocationsWithPolyline(m_routeLine, simulatedLocationDataSource);
+    simulatedDeviceLocation->setLocationsWithPolyline(m_routePolyline, simulatedLocationDataSource);
 
     // Create a new Geotrigger feed with the simulated location source.
     LocationGeotriggerFeed* locationGeotriggerFeed = new LocationGeotriggerFeed(simulatedDeviceLocation, this);
