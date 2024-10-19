@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUrl>
 
+class QProcess;
+
 class RecordingSession : public QObject
 {
     Q_OBJECT
@@ -18,6 +20,7 @@ signals:
 
 private:
     QUrl m_trafficCamServer;
+    QProcess* m_ffmpegProcess;
 };
 
 #endif // RECORDINGSESSION_H
