@@ -13,7 +13,7 @@
 #ifndef TRAFFICGRAM_H
 #define TRAFFICGRAM_H
 
-#include "Geometry.h"
+#include "Polyline.h"
 namespace Esri::ArcGISRuntime {
 class Map;
 class MapQuickView;
@@ -46,7 +46,7 @@ private:
     void createGraphics(Esri::ArcGISRuntime::GraphicsOverlay* overlay);
     void setupGeotriggers();
 
-    Esri::ArcGISRuntime::Geometry m_route;
+    Esri::ArcGISRuntime::Polyline m_routePolyline;
 
     Esri::ArcGISRuntime::Map* m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
