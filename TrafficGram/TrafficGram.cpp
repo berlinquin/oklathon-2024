@@ -40,8 +40,7 @@ MapQuickView* TrafficGram::mapView() const
 
 void TrafficGram::setupViewpoint()
 {
-
-    const Point center(-118.80543, 34.02700, SpatialReference::wgs84());
+    const Point center(-97.51689, 35.49325, SpatialReference::wgs84());
     const Viewpoint viewpoint(center, 100000.0);
     m_mapView->setViewpointAsync(viewpoint);
 }
