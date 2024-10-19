@@ -1,0 +1,62 @@
+---
+Language: Cpp
+Standard: Latest
+BasedOnStyle: LLVM
+AccessModifierOffset: -2
+AlignConsecutiveAssignments:
+  Enabled: True
+AlignConsecutiveDeclarations:
+  Enabled: True
+AlignArrayOfStructures: Right
+AlignConsecutiveBitFields:
+  Enabled: True
+AlignOperands: false
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortBlocksOnASingleLine: Always
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: Never
+  AfterEnum: false
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakConstructorInitializers: BeforeColon
+ColumnLimit: 100
+CompactNamespaces: true
+Cpp11BracedListStyle: true
+ForEachMacros: [ ARRAYLIST_FORI, ARRAYLIST_FOREACH ]
+IncludeCategories:
+  - Regex: '^<.*'
+    Priority: 1
+  - Regex: '^".*'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
+IncludeIsMainRegex: '([-_](test|unittest))?$'
+IndentCaseLabels: true
+IndentWidth: 4
+InsertNewlineAtEOF: true
+MacroBlockBegin: ''
+MacroBlockEnd: ''
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+PointerAlignment: Right
+SortIncludes: CaseSensitive
+SpaceAfterCStyleCast: true
+SpacesInAngles: false
+TabWidth: 4
+...
