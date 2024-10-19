@@ -16,6 +16,7 @@
 #include "MapQuickView.h"
 
 #include <QDir>
+#include <QtEnvironmentVariables>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -41,7 +42,7 @@ int main(int argc, char *argv[])
     // ArcGIS location services. Go to the tutorial at https://links.esri.com/create-an-api-key.
     // Copy the API Key access token.
 
-    const QString accessToken = QString("");
+    const QString accessToken = qEnvironmentVariable("api_key");
 
     if (accessToken.isEmpty())
     {
