@@ -166,18 +166,7 @@ void TrafficGram::setupGeotriggers()
 
     // Enable location display on the map view using the same simulated location source.
     locationDisplay->setDataSource(simulatedDeviceLocation);
-<<<<<<< HEAD
-
-    // SETUP GEOFENCE
-
-    const auto bufferDistance = 50.0;
-    GraphicFenceParameters *graphicFenceParameters = new GraphicFenceParameters(m_graphics, bufferDistance);
-
-    // Create a geotrigger with the location feed, "enter" rule type, and the fence parameters.
-    FenceGeotrigger* fenceGeotrigger = new FenceGeotrigger(locationGeotriggerFeed, FenceRuleType::EnterOrExit, graphicFenceParameters, this);
-=======
     locationDisplay->start();
->>>>>>> 49ffd6b (Enabled simulated location)
 }
 
 void TrafficGram::startSimulatedLocation()
