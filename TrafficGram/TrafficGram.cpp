@@ -16,6 +16,11 @@
 #include "MapTypes.h"
 #include "MapQuickView.h"
 
+#include "Point.h"
+#include "Viewpoint.h"
+#include "SpatialReference.h"
+#include <QFuture>
+
 using namespace Esri::ArcGISRuntime;
 
 TrafficGram::TrafficGram(QObject* parent /* = nullptr */):
@@ -33,6 +38,14 @@ MapQuickView* TrafficGram::mapView() const
     return m_mapView;
 }
 
+void TrafficGram::setupViewpoint()
+{
+
+    const Point center(-118.80543, 34.02700, SpatialReference::wgs84());
+    const Viewpoint viewpoint(center, 100000.0);
+    m_mapView->setViewpointAsync(viewpoint);
+}
+
 // Set the view (created in QML)
 void TrafficGram::setMapView(MapQuickView* mapView)
 {
@@ -43,6 +56,8 @@ void TrafficGram::setMapView(MapQuickView* mapView)
 
     m_mapView = mapView;
     m_mapView->setMap(m_map);
+
+    setupViewpoint();
 
     emit mapViewChanged();
 }
