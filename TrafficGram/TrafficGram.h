@@ -14,6 +14,7 @@
 #define TRAFFICGRAM_H
 
 #include "Polyline.h"
+#include "GeotriggerMonitor.h"
 namespace Esri::ArcGISRuntime {
 class Graphic;
 class Map;
@@ -55,6 +56,8 @@ private:
 
     Esri::ArcGISRuntime::Map* m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
+
+    Esri::ArcGISRuntime::GeotriggerMonitor* m_geotriggerMonitor = nullptr;
 };
 
 #endif // TRAFFICGRAM_H

@@ -147,7 +147,7 @@ void TrafficGram::setupGeotriggers()
     // Create a new simulation parameters; set the start time and velocity.
     SimulationParameters* simulatedLocationDataSource = new SimulationParameters(this);
     simulatedLocationDataSource->setStartTime(QDateTime::currentDateTime());
-    simulatedLocationDataSource->setVelocity(27); // Meters/Second
+    simulatedLocationDataSource->setVelocity(100); // Meters/Second
 
     // The simulated location will move across the provided polyline.
     simulatedDeviceLocation->setLocationsWithPolyline(m_routePolyline, simulatedLocationDataSource);
@@ -162,11 +162,20 @@ void TrafficGram::setupGeotriggers()
     locationDisplay->setDataSource(simulatedDeviceLocation);
 
     // SETUP GEOFENCE
-    const auto bufferDistance = 50.0;
-    GraphicFenceParameters *graphicFenceParameters = new GraphicFenceParameters(m_graphics, bufferDistance);
+    const auto bufferDistance = 200.0;
+    GraphicFenceParameters *graphicFenceParameters = new GraphicFenceParameters(m_graphics, bufferDistance, this);
 
     // Create a geotrigger with the location feed, "enter" rule type, and the fence parameters.
     FenceGeotrigger* fenceGeotrigger = new FenceGeotrigger(locationGeotriggerFeed, FenceRuleType::EnterOrExit, graphicFenceParameters, this);
+
+    m_geotriggerMonitor = new GeotriggerMonitor(fenceGeotrigger, this);
+    connect(m_geotriggerMonitor, &GeotriggerMonitor::geotriggerNotification, this, [this] (GeotriggerNotificationInfo* geotriggerNotificationInfo)
+    {
+    });
+
+    QFuture<void> ignored = m_geotriggerMonitor->startAsync();
+    Q_UNUSED(ignored);
+    locationDisplay->start();
 }
 
 void TrafficGram::startSimulatedLocation()
