@@ -2,7 +2,7 @@
 
 A project for the Oklathon hackathon on October 19, 2024.
 
-**Project goal:**
+## Project goal
 
 - The Oklahoma Dept of Transportation (ODOT) provides live camera streams at
 many locations along the highway.
@@ -15,6 +15,15 @@ phone.
 
  Our hope is that the TrafficGram app would allow for unique media projects and maybe add some fun to a
 daily commute!
+
+## Demo
+
+![App demo](./resources/demo.gif)
+
+The gif aboves shows the progress of our app by the end of the hackathon. You can observe:
+
+- The blue dot, simulating the user's location, moving along the highway (I-44).
+- As it nears a traffic cam (represented by a red dot) an inlay pops up showing a live feed from the traffic cam at that location.
 
 ## Dev Environment
 
@@ -35,6 +44,6 @@ Follow these steps to set up your dev environment. This assumes development is b
    - Optionally, create your own [Location Platform](https://www.esri.com/en-us/arcgis/products/arcgis-location-platform/overview) account. I have an account and API key that we can use for the hackathon.
    - I used cmake as the build tool and it worked fine.
 
-Links
+## Links
 
 - The [oktraffic.org](https://oktraffic.org/#/map) map with the different traffic cams
