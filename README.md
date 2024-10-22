@@ -1,6 +1,20 @@
-# oklathon-2024
+# TrafficGram
 
-All work for the Oklathon hackathon on October 19, 2024.
+A project for the Oklathon hackathon on October 19, 2024.
+
+**Project goal:**
+
+- The Oklahoma Dept of Transportation (ODOT) provides live camera streams at
+many locations along the highway.
+- Our plan is to make a mobile app that can run in the background when the user
+is driving, recognize when the user's location is near a traffic cam, and record
+a few seconds of footage from the traffic cam, which is saved to the user's
+phone.
+- This recording can be saved in case of a traffic accident, be shared on social
+  media, or be used to produce a time-lapse of a daily commute.
+
+ Our hope is that the TrafficGram app would allow for unique media projects and maybe add some fun to a
+daily commute!
 
 ## Dev Environment
 
