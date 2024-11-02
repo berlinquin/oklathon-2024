@@ -63,6 +63,7 @@ if(ANDROID)
   qt_add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 else()
   qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCE_FILES}
+      CameraListManager.h CameraListManager.cpp
   )
   # IOS uses static Runtimecore Framework
   if(IOS)
