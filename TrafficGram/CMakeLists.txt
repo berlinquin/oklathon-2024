@@ -139,6 +139,7 @@ enable_testing()
 add_executable(
   traffic_gram_test
   TrafficGramTest.cpp
+  CameraListManagerTest.cpp
 )
 target_link_libraries(
   traffic_gram_test
