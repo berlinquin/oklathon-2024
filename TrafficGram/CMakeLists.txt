@@ -54,7 +54,7 @@ if(ANDROID)
   qt_add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 else()
   qt_add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCE_FILES}
-      recordingsession.h recordingsession.cpp)
+  )
   # IOS uses static Runtimecore Framework
   if(IOS)
     set_target_properties(${PROJECT_NAME} PROPERTIES INSTALL_RPATH @executable_path/Frameworks 
