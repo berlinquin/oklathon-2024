@@ -123,3 +123,6 @@ if(ANDROID)
       message(WARNING "openssl libraries are missing, check the project CMakeLists.txt and set up openssl environment")
   endif()
 endif()
+
+# Include the GoogleTest project
+add_subdirectory(test/ test/build/)
