@@ -16,23 +16,23 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(
-  hello_test
+  TrafficGramTest
   TrafficGramTest.cc
 )
 
 # Copy required dynamic libraries to the build folder as a post-build step.
 if(DEFINED ArcGISRuntime_LIBRARIES)
-  add_custom_command(TARGET hello_test POST_BUILD
+  add_custom_command(TARGET TrafficGramTest POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${ArcGISRuntime_LIBRARIES}
-    $<TARGET_FILE_DIR:hello_test>)
+    $<TARGET_FILE_DIR:TrafficGramTest>)
 endif()
 
 target_link_libraries(
-  hello_test PRIVATE
+  TrafficGramTest PRIVATE
   GTest::gtest_main
 )
-target_link_libraries(hello_test PRIVATE
+target_link_libraries(TrafficGramTest PRIVATE
   Qt6::Core
   Qt6::Quick
   Qt6::Multimedia
@@ -42,4 +42,4 @@ target_link_libraries(hello_test PRIVATE
   ArcGISRuntime::Cpp)
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(TrafficGramTest)
