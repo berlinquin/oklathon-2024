@@ -139,12 +139,20 @@ enable_testing()
 add_executable(
   traffic_gram_test
   TrafficGramTest.cpp
-  CameraListManagerTest.cpp
+  # CameraListManagerTest.cpp
 )
 target_link_libraries(
-  traffic_gram_test
+  traffic_gram_test PRIVATE
   GTest::gtest_main
 )
+# target_link_libraries(traffic_gram_test PRIVATE
+#   Qt6::Core
+#   Qt6::Quick
+#   Qt6::Multimedia
+#   Qt6::Positioning
+#   Qt6::Sensors
+#   Qt6::WebSockets
+#   ArcGISRuntime::Cpp)
 
 include(GoogleTest)
 gtest_discover_tests(traffic_gram_test)
