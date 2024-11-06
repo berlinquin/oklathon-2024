@@ -18,6 +18,7 @@ enable_testing()
 add_executable(
   TrafficGramTest
   TrafficGramTest.cc
+  CameraListManagerTest.cc
 )
 
 # Copy required dynamic libraries to the build folder as a post-build step.
