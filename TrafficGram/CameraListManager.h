@@ -11,6 +11,8 @@ struct TrafficCamera
     QString livestreamUrl;
 };
 
+QVector<TrafficCamera> cameraListFromJson(const QJsonDocument& jsonDocument);
+
 class CameraListManager : public QObject
 {
     Q_OBJECT
@@ -20,10 +22,10 @@ public:
     void loadCameraList();
 
 signals:
-     void cameraListReady(QVector<TrafficCamera>);
+     void cameraListChanged(QVector<TrafficCamera>);
 
 private slots:
-    void cameraListReceived(QNetworkReply *reply);
+    void onNetworkReplyReceived(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *m_networkManager;

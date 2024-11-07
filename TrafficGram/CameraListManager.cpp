@@ -7,11 +7,27 @@
 
 #include "CameraListManager.h"
 
+QVector<TrafficCamera> cameraListFromJson(const QJsonDocument& jsonDocument)
+{
+    if (!jsonDocument.isArray())
+    {
+        return {};
+    }
+
+    QVector<TrafficCamera> out;
+
+    auto jsonArray = jsonDocument.array();
+    for (const auto& jsonDoc : jsonArray)
+    {
+        // TODO handle each item in the array
+    }
+}
+
 CameraListManager::CameraListManager(QObject *parent)
     : QObject{parent}
 {
     m_networkManager = new QNetworkAccessManager(this);
-    connect(m_networkManager, &QNetworkAccessManager::finished, this, &CameraListManager::cameraListReceived);
+    connect(m_networkManager, &QNetworkAccessManager::finished, this, &CameraListManager::onNetworkReplyReceived);
 }
 
 void CameraListManager::loadCameraList()
@@ -21,21 +37,9 @@ void CameraListManager::loadCameraList()
     m_networkManager->get(cameraPoleRequest);
 }
 
-void CameraListManager::cameraListReceived(QNetworkReply *reply)
+void CameraListManager::onNetworkReplyReceived(QNetworkReply *reply)
 {
     auto json = QJsonDocument::fromJson(reply->readAll());
-    if (!json.isArray())
-    {
-        emit cameraListReady(QVector<TrafficCamera>{});
-        return;
-    }
-
-    QVector<TrafficCamera> out;
-
-    auto jsonArray = json.array();
-    for (const auto& jsonDoc : jsonArray)
-    {
-        // TODO handle each item in the array
-    }
-    emit cameraListReady(std::move(out));
+    auto cameraList = cameraListFromJson(json);
+    emit cameraListChanged(std::move(cameraList));
 }
