@@ -3,7 +3,7 @@
 #include "../CameraListManager.h"
 
 // Demonstrate some basic assertions.
-TEST(CameraListManagerTest, BasicAssertions) {
+TEST(CameraListManagerTest, CameraFromJson) {
   // Expect two strings not to be equal.
   EXPECT_STRNE("hello", "world");
   // Expect equality.

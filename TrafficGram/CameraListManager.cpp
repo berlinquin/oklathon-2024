@@ -1,5 +1,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -7,19 +8,25 @@
 
 #include "CameraListManager.h"
 
-QVector<TrafficCamera> cameraListFromJson(const QJsonDocument& jsonDocument)
+CameraPole cameraPoleFromJson(const QJsonObject& cameraJson)
+{
+    return {};
+}
+
+QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument)
 {
     if (!jsonDocument.isArray())
     {
         return {};
     }
 
-    QVector<TrafficCamera> out;
+    QVector<CameraPole> out;
 
     auto jsonArray = jsonDocument.array();
     for (const auto& jsonDoc : jsonArray)
     {
-        // TODO handle each item in the array
+        auto cameraJson = jsonDoc.toObject();
+        out.push_back(cameraPoleFromJson(cameraJson));
     }
 }
 
@@ -33,13 +40,18 @@ CameraListManager::CameraListManager(QObject *parent)
 void CameraListManager::loadCameraList()
 {
     const QUrl cameraPoleEndpoint{"https://oktraffic.org/api/CameraPoles"};
+
     QNetworkRequest cameraPoleRequest{cameraPoleEndpoint};
+
+    // TODO set this filter as a request header
+    auto filter = R"({"include":[{"relation":"mapCameras","scope":{"include":"streamDictionary","where":{"status":{"neq":"Out Of Service"},"type":"Web","blockAtis":{"neq":"1"}}}},{"relation":"cameraLocationLinks","scope":{"include":["linkedCameraPole","cameraPole"]}}]})";
+
     m_networkManager->get(cameraPoleRequest);
 }
 
 void CameraListManager::onNetworkReplyReceived(QNetworkReply *reply)
 {
     auto json = QJsonDocument::fromJson(reply->readAll());
-    auto cameraList = cameraListFromJson(json);
+    auto cameraList = cameraPolesFromJson(json);
     emit cameraListChanged(std::move(cameraList));
 }

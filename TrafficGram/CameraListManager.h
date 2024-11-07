@@ -6,12 +6,29 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
-struct TrafficCamera
+enum class CardinalDirection
 {
-    QString livestreamUrl;
+    N,
+    NE,
+    E,
+    SE,
+    S,
+    SW,
+    W,
+    NW
 };
 
-QVector<TrafficCamera> cameraListFromJson(const QJsonDocument& jsonDocument);
+struct TrafficCamera
+{
+    QString streamUrl;
+};
+
+// A camera pole may have multiple traffic cams on it.
+// Each traffic cam is associated with a cardinal direction.
+using CameraPole = std::unordered_map<CardinalDirection, TrafficCamera>;
+
+CameraPole cameraPoleFromJson(const QJsonObject& cameraJson);
+QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument);
 
 class CameraListManager : public QObject
 {
@@ -22,7 +39,7 @@ public:
     void loadCameraList();
 
 signals:
-     void cameraListChanged(QVector<TrafficCamera>);
+     void cameraListChanged(QVector<CameraPole>);
 
 private slots:
     void onNetworkReplyReceived(QNetworkReply *reply);
