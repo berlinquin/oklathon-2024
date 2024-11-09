@@ -28,6 +28,7 @@ QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument)
         auto cameraJson = jsonDoc.toObject();
         out.push_back(cameraPoleFromJson(cameraJson));
     }
+    return out;
 }
 
 CameraListManager::CameraListManager(QObject *parent)
