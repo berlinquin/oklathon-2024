@@ -95,33 +95,42 @@ std::optional<CardinalDirection> cardinalDirectionFromJson(const QJsonValue& val
     return {};
 }
 
-CameraPole cameraPoleFromJson(const QJsonObject& cameraJson)
+std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraJson)
 {
     CameraPole out;
-    if (auto name = cameraJson["name"]; name.isString())
-    {
-        out.name = name.toString();
-    }
-    if (auto mapCameras = cameraJson["mapCameras"]; mapCameras.isArray())
-    {
-        auto mapCamerasArray = mapCameras.toArray();
-        for (const auto& mapCamera : mapCamerasArray)
-        {
-            if (!mapCamera.isObject())
-            {
-                continue;
-            }
-            auto mapCameraObject = mapCamera.toObject();
-            auto cardinalDirection = cardinalDirectionFromJson(mapCameraObject["direction"]);
-            if (!cardinalDirection)
-            {
-                continue;
-            }
-            if (auto trafficCam = trafficCameraFromJson(mapCameraObject))
-            {
 
-            }
+    auto name = cameraJson["name"];
+    if (!name.isString())
+    {
+        return {};
+    }
+    out.name = name.toString();
+
+    auto mapCameras = cameraJson["mapCameras"];
+    if (!mapCameras.isArray())
+    {
+        return {};
+    }
+    auto mapCamerasArray = mapCameras.toArray();
+    std::unordered_map<CardinalDirection, TrafficCamera> mapCamerasOut;
+    for (const auto& mapCamera : mapCamerasArray)
+    {
+        if (!mapCamera.isObject())
+        {
+            return {};
         }
+        auto mapCameraObject = mapCamera.toObject();
+        auto cardinalDirection = cardinalDirectionFromJson(mapCameraObject["direction"]);
+        if (!cardinalDirection)
+        {
+            return {};
+        }
+        auto trafficCam = trafficCameraFromJson(mapCameraObject);
+        if (!trafficCam)
+        {
+            return {};
+        }
+        mapCamerasOut.emplace(*cardinalDirection, std::move(*trafficCam));
     }
     return out;
 }
@@ -139,10 +148,15 @@ QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument)
     {
         if (!jsonDoc.isObject())
         {
-            continue;
+            return {};
         }
-        auto cameraJson = jsonDoc.toObject();
-        out.push_back(cameraPoleFromJson(cameraJson));
+        auto cameraPole = cameraPoleFromJson(jsonDoc.toObject());
+        if (!cameraPole)
+        {
+            return {};
+        }
+
+        out.push_back(std::move(*cameraPole));
     }
     return out;
 }

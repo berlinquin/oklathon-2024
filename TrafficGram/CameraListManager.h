@@ -34,7 +34,7 @@ struct CameraPole
     std::unordered_map<CardinalDirection, TrafficCamera> cameras;
 };
 
-CameraPole cameraPoleFromJson(const QJsonObject& cameraJson);
+std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraJson);
 QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument);
 
 class CameraListManager : public QObject
