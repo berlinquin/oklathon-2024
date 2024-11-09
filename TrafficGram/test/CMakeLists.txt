@@ -19,6 +19,8 @@ add_executable(
   TrafficGramTest
   TrafficGramTest.cc
   CameraListManagerTest.cc
+  ../CameraListManager.h
+  ../CameraListManager.cpp
 )
 
 # Copy required dynamic libraries to the build folder as a post-build step.
