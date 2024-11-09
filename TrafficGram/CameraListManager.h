@@ -25,7 +25,11 @@ struct TrafficCamera
 
 // A camera pole may have multiple traffic cams on it.
 // Each traffic cam is associated with a cardinal direction.
-using CameraPole = std::unordered_map<CardinalDirection, TrafficCamera>;
+struct CameraPole
+{
+    QString name;
+    std::unordered_map<CardinalDirection, TrafficCamera> cameras;
+};
 
 CameraPole cameraPoleFromJson(const QJsonObject& cameraJson);
 QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument);

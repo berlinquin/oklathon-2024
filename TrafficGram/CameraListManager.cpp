@@ -10,7 +10,12 @@
 
 CameraPole cameraPoleFromJson(const QJsonObject& cameraJson)
 {
-    return {};
+    CameraPole out;
+    if (cameraJson.contains("name"))
+    {
+        out.name = cameraJson["name"].toString();
+    }
+    return out;
 }
 
 QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument)
