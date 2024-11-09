@@ -3,6 +3,8 @@
 #include <QJsonDocument>
 #include <gtest/gtest.h>
 
+#include <SpatialReference.h>
+
 #include "../CameraListManager.h"
 
 TEST(CameraListManagerTest, CameraPoleFromJson) {
@@ -25,6 +27,13 @@ TEST(CameraListManagerTest, CameraPoleFromJson) {
     const auto& cameraPole = cameraPoles[0];
     EXPECT_EQ(cameraPole.name, QString("I-44 & I-240"));
 
-    const auto& camera = cameraPole.cameras;
-    EXPECT_EQ(camera.size(), size_t{2}) << "Rationale: Camera pole should have two traffic cams";
+    const auto& cameras = cameraPole.cameras;
+    EXPECT_EQ(cameras.size(), size_t{2}) << "Rationale: Camera pole should have two traffic cams";
+
+    auto camera_it = cameras.find(CardinalDirection::S);
+    EXPECT_NE(camera_it, std::end(cameras)) << "Rationale: Camera pole should have a south-facing traffic cam";
+
+    const auto& camera = camera_it->second;
+    EXPECT_EQ(camera.name, "I-44 & I-240 S");
+    EXPECT_EQ(camera.location, Esri::ArcGISRuntime::Point(-97.57406, 35.39637, Esri::ArcGISRuntime::SpatialReference::wgs84()));
 }
