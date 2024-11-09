@@ -24,4 +24,7 @@ TEST(CameraListManagerTest, CameraPoleFromJson) {
     // AND: The first CameraPole should have the expected properties
     const auto& cameraPole = cameraPoles[0];
     EXPECT_EQ(cameraPole.name, QString("I-44 & I-240"));
+
+    const auto& camera = cameraPole.cameras;
+    EXPECT_EQ(camera.size(), size_t{2}) << "Rationale: Camera pole should have two traffic cams";
 }

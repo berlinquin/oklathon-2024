@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include <Point.h>
+
 class QNetworkAccessManager;
 class QNetworkReply;
 
@@ -20,7 +22,8 @@ enum class CardinalDirection
 
 struct TrafficCamera
 {
-    QString streamUrl;
+    QString name;
+    Esri::ArcGISRuntime::Point location;
 };
 
 // A camera pole may have multiple traffic cams on it.
