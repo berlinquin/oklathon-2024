@@ -132,6 +132,8 @@ std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraJson)
         }
         mapCamerasOut.emplace(*cardinalDirection, std::move(*trafficCam));
     }
+    out.cameras = std::move(mapCamerasOut);
+
     return out;
 }
 
