@@ -176,13 +176,11 @@ CameraListManager::CameraListManager(QObject *parent)
 void CameraListManager::loadCameraList()
 {
     const QUrl cameraPoleEndpoint{"https://oktraffic.org/api/CameraPoles"};
+    QNetworkRequest request{cameraPoleEndpoint};
 
-    QNetworkRequest cameraPoleRequest{cameraPoleEndpoint};
+    request.setRawHeader("filter", R"({"include":[{"relation":"mapCameras","scope":{"include":"streamDictionary","where":{"status":{"neq":"Out Of Service"},"type":"Web","blockAtis":{"neq":"1"}}}},{"relation":"cameraLocationLinks","scope":{"include":["linkedCameraPole","cameraPole"]}}]})");
 
-    // TODO set this filter as a request header
-    auto filter = R"({"include":[{"relation":"mapCameras","scope":{"include":"streamDictionary","where":{"status":{"neq":"Out Of Service"},"type":"Web","blockAtis":{"neq":"1"}}}},{"relation":"cameraLocationLinks","scope":{"include":["linkedCameraPole","cameraPole"]}}]})";
-
-    m_networkManager->get(cameraPoleRequest);
+    m_networkManager->get(request);
 }
 
 void CameraListManager::onNetworkReplyReceived(QNetworkReply *reply)

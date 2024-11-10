@@ -18,6 +18,8 @@
 #include "Polyline.h"
 #include "GeotriggerMonitor.h"
 
+#include "CameraListManager.h"
+
 namespace Esri::ArcGISRuntime {
 class Graphic;
 class Map;
@@ -45,6 +47,7 @@ signals:
 
 public slots:
     void loadCameraList();
+    void handleCameraListChanged(QVector<CameraPole>);
     void startSimulatedLocation();
 
 signals:
@@ -58,6 +61,7 @@ private:
     void createGraphics(Esri::ArcGISRuntime::GraphicsOverlay* overlay);
     void setupGeotriggers();
 
+    Esri::ArcGISRuntime::GraphicsOverlay* m_graphicsOverlay;
     Esri::ArcGISRuntime::Polyline m_routePolyline;
     QList<Esri::ArcGISRuntime::Graphic*> m_graphics;
     CameraListManager *m_cameraListManager;
