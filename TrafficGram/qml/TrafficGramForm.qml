@@ -49,7 +49,7 @@ Item {
         }
 
         VideoOutput {
-            id:videoOutput
+            id: videoOutput
             anchors.fill: parent
         }
 
@@ -91,6 +91,13 @@ Item {
         }
     }
 
+    Button {
+        id: loadCameraList
+        text: "Load Camera List"
+        anchors.bottom: startSimulatedLocation.top
+        anchors.right: startSimulatedLocation.right
+        onClicked: model.loadCameraList()
+    }
     Button {
         id: startSimulatedLocation
         text: "Start Simulated Location"

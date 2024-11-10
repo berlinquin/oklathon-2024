@@ -40,6 +40,8 @@
 #include "FenceGeotriggerNotificationInfo.h"
 #include "AttributeListModel.h"
 
+#include "CameraListManager.h"
+
 using namespace Esri::ArcGISRuntime;
 
 TrafficGram::TrafficGram(QObject* parent /* = nullptr */):
@@ -207,6 +209,15 @@ void TrafficGram::setupGeotriggers()
 
     QFuture<void> ignored = m_geotriggerMonitor->startAsync();
     Q_UNUSED(ignored);
+}
+
+void TrafficGram::loadCameraList()
+{
+    if (!m_cameraListManager)
+    {
+        m_cameraListManager = new CameraListManager(this);
+    }
+    m_cameraListManager->loadCameraList();
 }
 
 void TrafficGram::startSimulatedLocation()

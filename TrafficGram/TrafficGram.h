@@ -13,17 +13,19 @@
 #ifndef TRAFFICGRAM_H
 #define TRAFFICGRAM_H
 
+#include <QObject>
+
 #include "Polyline.h"
 #include "GeotriggerMonitor.h"
+
 namespace Esri::ArcGISRuntime {
 class Graphic;
 class Map;
 class MapQuickView;
-
 class GraphicsOverlay;
 } // namespace Esri::ArcGISRuntime
 
-#include <QObject>
+class CameraListManager;
 
 Q_MOC_INCLUDE("MapQuickView.h")
 
@@ -42,6 +44,7 @@ signals:
     void hideVideo();
 
 public slots:
+    void loadCameraList();
     void startSimulatedLocation();
 
 signals:
@@ -57,6 +60,7 @@ private:
 
     Esri::ArcGISRuntime::Polyline m_routePolyline;
     QList<Esri::ArcGISRuntime::Graphic*> m_graphics;
+    CameraListManager *m_cameraListManager;
 
     Esri::ArcGISRuntime::Map* m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
