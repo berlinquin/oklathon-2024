@@ -133,6 +133,12 @@ std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraPoleJson)
         mapCameras.emplace(*cardinalDirection, std::move(*trafficCam));
     }
     out.cameras = std::move(mapCameras);
+    if (out.cameras.empty())
+    {
+        return {};
+    }
+    // Populate the cameraPole's location with the location of one of the traffic cams
+    out.location = std::begin(out.cameras)->second.location;
 
     return out;
 }
@@ -146,19 +152,16 @@ QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& json)
     auto jsonArray = json.array();
 
     QVector<CameraPole> out;
-    for (const auto& jsonElement : jsonArray)
+    for (const auto& jsonElement: jsonArray)
     {
         if (!jsonElement.isObject())
         {
             return {};
         }
-        auto cameraPole = cameraPoleFromJson(jsonElement.toObject());
-        if (!cameraPole)
+        if (auto cameraPole = cameraPoleFromJson(jsonElement.toObject()))
         {
-            return {};
+            out.push_back(std::move(*cameraPole));
         }
-
-        out.push_back(std::move(*cameraPole));
     }
     return out;
 }

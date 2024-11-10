@@ -31,6 +31,7 @@ struct TrafficCamera
 struct CameraPole
 {
     QString name;
+    Esri::ArcGISRuntime::Point location;
     std::unordered_map<CardinalDirection, TrafficCamera> cameras;
 };
 
