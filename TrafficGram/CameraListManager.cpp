@@ -178,7 +178,7 @@ void CameraListManager::loadCameraList()
     const QUrl cameraPoleEndpoint{"https://oktraffic.org/api/CameraPoles"};
     QNetworkRequest request{cameraPoleEndpoint};
 
-    request.setRawHeader("filter", R"({"include":[{"relation":"mapCameras","scope":{"include":"streamDictionary","where":{"status":{"neq":"Out Of Service"},"type":"Web","blockAtis":{"neq":"1"}}}},{"relation":"cameraLocationLinks","scope":{"include":["linkedCameraPole","cameraPole"]}}]})");
+    request.setRawHeader("filter", R"({"include":[{"relation":"mapCameras","scope":{"include":"streamDictionary","where":{"status":{"neq":"Out Of Service"},"type":"Web","blockAtis":{"neq":"1"}}}}]})");
 
     m_networkManager->get(request);
 }
