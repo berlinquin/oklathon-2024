@@ -32,15 +32,15 @@ std::optional<Esri::ArcGISRuntime::Point> pointFromJson(const QJsonValue& latitu
     return Esri::ArcGISRuntime::Point(x, y, Esri::ArcGISRuntime::SpatialReference::wgs84());
 }
 
-std::optional<TrafficCamera> trafficCameraFromJson(const QJsonObject& cameraJson)
+std::optional<TrafficCamera> trafficCameraFromJson(const QJsonObject& trafficCameraJson)
 {
-    auto location = cameraJson["location"];
+    auto location = trafficCameraJson["location"];
     if (!location.isString())
     {
         return {};
     }
 
-    auto point = pointFromJson(cameraJson["latitude"], cameraJson["longitude"]);
+    auto point = pointFromJson(trafficCameraJson["latitude"], trafficCameraJson["longitude"]);
     if (!point)
     {
         return {};
@@ -52,67 +52,67 @@ std::optional<TrafficCamera> trafficCameraFromJson(const QJsonObject& cameraJson
     };
 }
 
-std::optional<CardinalDirection> cardinalDirectionFromJson(const QJsonValue& value)
+std::optional<CardinalDirection> cardinalDirectionFromJson(const QJsonValue& cardinalDirectionValue)
 {
-    if (!value.isString())
+    if (!cardinalDirectionValue.isString())
     {
         return {};
     }
 
-    auto valueStr = value.toString();
-    if (valueStr == "N")
+    auto cardinalDirection = cardinalDirectionValue.toString();
+    if (cardinalDirection == "N")
     {
         return CardinalDirection::N;
     }
-    if (valueStr == "NE")
+    if (cardinalDirection == "NE")
     {
         return CardinalDirection::NE;
     }
-    if (valueStr == "E")
+    if (cardinalDirection == "E")
     {
         return CardinalDirection::E;
     }
-    if (valueStr == "SE")
+    if (cardinalDirection == "SE")
     {
         return CardinalDirection::SE;
     }
-    if (valueStr == "S")
+    if (cardinalDirection == "S")
     {
         return CardinalDirection::S;
     }
-    if (valueStr == "SW")
+    if (cardinalDirection == "SW")
     {
         return CardinalDirection::SW;
     }
-    if (valueStr == "W")
+    if (cardinalDirection == "W")
     {
         return CardinalDirection::W;
     }
-    if (valueStr == "NW")
+    if (cardinalDirection == "NW")
     {
         return CardinalDirection::NW;
     }
     return {};
 }
 
-std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraJson)
+std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraPoleJson)
 {
     CameraPole out;
 
-    auto name = cameraJson["name"];
+    auto name = cameraPoleJson["name"];
     if (!name.isString())
     {
         return {};
     }
     out.name = name.toString();
 
-    auto mapCameras = cameraJson["mapCameras"];
-    if (!mapCameras.isArray())
+    auto mapCamerasJson = cameraPoleJson["mapCameras"];
+    if (!mapCamerasJson.isArray())
     {
         return {};
     }
-    auto mapCamerasArray = mapCameras.toArray();
-    std::unordered_map<CardinalDirection, TrafficCamera> mapCamerasOut;
+    auto mapCamerasArray = mapCamerasJson.toArray();
+    std::unordered_map<CardinalDirection, TrafficCamera> mapCameras;
     for (const auto& mapCamera : mapCamerasArray)
     {
         if (!mapCamera.isObject())
@@ -130,29 +130,29 @@ std::optional<CameraPole> cameraPoleFromJson(const QJsonObject& cameraJson)
         {
             return {};
         }
-        mapCamerasOut.emplace(*cardinalDirection, std::move(*trafficCam));
+        mapCameras.emplace(*cardinalDirection, std::move(*trafficCam));
     }
-    out.cameras = std::move(mapCamerasOut);
+    out.cameras = std::move(mapCameras);
 
     return out;
 }
 
-QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& jsonDocument)
+QVector<CameraPole> cameraPolesFromJson(const QJsonDocument& json)
 {
-    if (!jsonDocument.isArray())
+    if (!json.isArray())
     {
         return {};
     }
-    auto jsonArray = jsonDocument.array();
+    auto jsonArray = json.array();
 
     QVector<CameraPole> out;
-    for (const auto& jsonDoc : jsonArray)
+    for (const auto& jsonElement : jsonArray)
     {
-        if (!jsonDoc.isObject())
+        if (!jsonElement.isObject())
         {
             return {};
         }
-        auto cameraPole = cameraPoleFromJson(jsonDoc.toObject());
+        auto cameraPole = cameraPoleFromJson(jsonElement.toObject());
         if (!cameraPole)
         {
             return {};
