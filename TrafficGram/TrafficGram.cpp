@@ -40,6 +40,8 @@
 #include "FenceGeotriggerNotificationInfo.h"
 #include "AttributeListModel.h"
 
+#include "CameraSymbol.h"
+
 using namespace Esri::ArcGISRuntime;
 
 TrafficGram::TrafficGram(QObject* parent /* = nullptr */):
@@ -228,21 +230,20 @@ void TrafficGram::handleCameraListChanged(QVector<CameraPole> cameraPoles)
     Graphic* polyline_graphic = new Graphic(m_routePolyline, route_symbol, this);
     graphics->append(polyline_graphic);
 
-    SimpleLineSymbol* point_outline = new SimpleLineSymbol(SimpleLineSymbolStyle::Solid, QColor("blue"), 3, this);
-    SimpleMarkerSymbol* point_symbol = new SimpleMarkerSymbol(SimpleMarkerSymbolStyle::Circle, QColor("red"), 15, this);
-    point_symbol->setOutline(point_outline);
+    auto cameraSymbol = Symbol::fromJson(c_cameraCimSymbol, this);
 
     // Create a graphic on the map for each CameraPole in the list
     for (const auto& cameraPole : cameraPoles)
     {
         // Create a graphic for the camera pole
-        Graphic* point_graphic = new Graphic(cameraPole.location, point_symbol, this);
+        Graphic* point_graphic = new Graphic(cameraPole.location, cameraSymbol, this);
         point_graphic->attributes()->insertAttribute("name", cameraPole.name);
         // TODO populate the url attribute
 
         // Add it to the graphics overlay
         graphics->append(point_graphic);
     }
+    // TODO update geotriggers
 }
 
 void TrafficGram::startSimulatedLocation()

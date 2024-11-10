@@ -47,6 +47,7 @@ set(SOURCE_FILES
   TrafficGram.h
   CameraListManager.cpp
   CameraListManager.h
+  CameraSymbol.h
   qml/qml.qrc
   Resources/Resources.qrc
   $<$<BOOL:${WIN32}>:Win/Resources.rc>
